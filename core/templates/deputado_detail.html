@@ -22,7 +22,7 @@
   <!-- Commissions list -->
   <ul id="comissoes-list">
     {% for comissao in comissoes %}
-      <li>{{ comissao.comissao.nome }} - {{ comissao.cargo.titulo }}</li>
+      <li>{{ comissao.nomePublicacao }} - {{ comissao.titulo }}</li>
     {% empty %}
       <li>Este deputado não participa de nenhuma comissão.</li>
     {% endfor %}

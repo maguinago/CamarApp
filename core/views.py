@@ -98,27 +98,12 @@ def deputado_detail(request, sigla, deputado_id):
 
     # Initialize commissions list
     comissoes = []
-    cargos = []
-    ids_salvos = set()
-    count = 1
 
     # Fetch commissions if requested
     if request.GET.get("comissoes") == "1":
         try:
-            comissoes_resp = requests.get("https://dadosabertos.camara.leg.br/api/v2/orgaos").json()
-            for comissao in comissoes_resp['dados']:
-                comissao_members_resp = requests.get(f"{comissao['uri']}/membros").json()
-                for membro in comissao_members_resp['dados']:
-                    if str(deputado_id) in membro['uri']:
-                        if comissao['id'] not in ids_salvos:
-                            comissoes.append({
-                                'comissao_no': count,
-                                'comissao': comissao,
-                                'cargo': membro
-                                              })
-                            ids_salvos.add(comissao['id'])
-                            count +=1
-
+            comissoes_resp = requests.get(f"https://dadosabertos.camara.leg.br/api/v2/deputados/{deputado_id}/orgaos").json()
+            comissoes = comissoes_resp['dados']
         except Exception as e:
             print("Erro ao buscar comissões:", e)
 
@@ -130,5 +115,7 @@ def deputado_detail(request, sigla, deputado_id):
         'show_comissoes': bool(comissoes)
     })
 
+
 def test_view(request):
     return render(request, 'test.html')
+
