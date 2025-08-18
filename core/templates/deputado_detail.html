@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<span>
+  {{ deputado.nomeCivil }}
+</span>
+<div class="container mt-4">
+  <!-- Deputy info above... -->
+
+{% if not show_comissoes %}
+  <!-- First click: reload to fetch commissions -->
+  <a href="?comissoes=1" class="btn btn-outline-info">Ver comissões</a>
+{% else %}
+  <!-- Radios for CSS toggle -->
+  <input type="radio" name="toggle-comissoes" id="hide-comissoes" checked hidden>
+  <input type="radio" name="toggle-comissoes" id="show-comissoes" hidden>
+
+  <!-- Single toggle button -->
+  <label for="show-comissoes" class="btn btn-outline-info" id="toggle-label">Ver comissões</label>
+  <label for="hide-comissoes" class="btn btn-outline-info" id="toggle-label-hide">Ocultar comissões</label>
+
+  <!-- Commissions list -->
+  <ul id="comissoes-list">
+    {% for comissao in comissoes %}
+      <li>{{ comissao.comissao.nome }} - {{ comissao.cargo.titulo }}</li>
+    {% empty %}
+      <li>Este deputado não participa de nenhuma comissão.</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+
+<script>
+  let comissoesLoaded = false;
+
+  function loadComissoes(deputadoId) {
+    if (comissoesLoaded) return;
+
+    const url = `https://dadosabertos.camara.leg.br/api/v2/orgaos`;
+    console.log("Fetching:", url);
+
+    fetch(url)
+      .then(response => {
+        console.log("Status code:", response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("API response:", data);
+        const container = document.getElementById('comissoes-container');
+        container.innerHTML = '';
+
+        if (!data.dados || data.dados.length === 0) {
+          container.innerHTML = '<p>Este deputado não participa de nenhuma comissão atualmente.</p>';
+          return;
+        }
+
+        const list = document.createElement('ul');
+        list.classList.add('list-group');
+
+        data.dados.forEach(comissao => {
+          const item = document.createElement('li');
+          item.className = 'list-group-item';
+          item.innerText = comissao.nome;
+          list.appendChild(item);
+        });
+
+        container.appendChild(list);
+        comissoesLoaded = true;
+      })
+      .catch(error => {
+        const container = document.getElementById('comissoes-container');
+        container.innerHTML = `<p class="text-danger">Erro ao carregar comissões: ${error.message}</p>`;
+        console.error("Fetch error:", error);
+      });
+  }
+</script>
+
+
+
+{% endblock %}

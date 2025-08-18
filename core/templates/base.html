@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>{% block title %}Meu App{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'core/css/custom.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  </head>
+  <body class="">
+    {% include "include/sidebar.html" %}
+
+    <div class="main-content">
+      {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const dropdownToggle = document.getElementById('dropdownToggle');
+        const partyGrid = document.getElementById('partyGrid');
+        const sidebar = document.querySelector('.sidebar');
+
+        let isDropdownOpen = false;
+
+        dropdownToggle.addEventListener('click', function (e) {
+          e.preventDefault();  // prevent "#" from scrolling
+          isDropdownOpen = !isDropdownOpen;
+          partyGrid.style.display = isDropdownOpen ? 'block' : 'none';
+        });
+
+        // Auto-hide when sidebar collapses
+        sidebar.addEventListener('mouseleave', function () {
+          if (isDropdownOpen) {
+            isDropdownOpen = false;
+            partyGrid.style.display = 'none';
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

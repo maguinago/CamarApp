@@ -1,0 +1,184 @@
+/* Custom CSS */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 80px; /* collapsed width */
+  background-color: #343a40;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+  z-index: 1000;
+}
+
+
+#logo {
+  width: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#brand {
+  background-color: rgb(50, 50, 50);
+}
+
+#brand span {
+  color: rgb(60, 132, 105);
+  padding-top: 12px;
+}
+
+.sidebar:hover {
+  width: 250px; /* expanded width */
+}
+
+.sidebar .nav-link {
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.nav-link i {
+  color: light-gray;
+}
+
+.nav-link:focus i,
+.nav-link:active i {
+  color: light-gray;
+}
+
+.sidebar:hover .nav-link {
+    justify-content: left;
+}
+
+.sidebar .nav-link .link-text {
+  width: 0;
+  color: light-gray;
+  display: none;
+  margin-left: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.nav-link:hover {
+  background-color: rgba(200,200,200,0.1);
+}
+
+.nav-link:hover i, .nav-link:hover .link-text {
+    color: rgb(60, 132, 105);
+}
+
+.sidebar:hover .link-text {
+  opacity: 1;
+  display: inline;
+}
+
+.main-content {
+  flex-grow: 1;
+  transition: all 0.3s ease;
+  margin-left: 80px;
+  padding: 10
+  overflow: auto;
+}
+
+.sidebar:hover ~ .main-content {
+  margin-left: 250px;
+  margin-right: 10px;
+}
+
+.main-svg {
+    border-radius: 20px;
+    box-shadow: 3px 3px 10px 5px rgb(0 0 0 / 0.05);
+}
+
+.sidebar .dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.sidebar .dropdown-menu {
+  position: static;              /* stay inside flow of sidebar */
+  float: none;
+  box-shadow: none;
+  background-color: #343a40;
+  padding-left: 1.5rem;
+  border: none;
+  display: none;                 /* optional for hover behavior */
+  flex-direction: column;       /* if you want flex-style layout */
+}
+
+
+.sidebar .dropdown-menu .dropdown-item {
+  color: white;
+  font-size: 0.9rem;
+  background-color: rgba(200, 200, 200, 0.1);
+}
+
+.sidebar .dropdown-menu .dropdown-item:hover {
+  color: rgb(60, 132, 105);
+}
+
+/* Party grid container: hidden until sidebar expands */
+.party-grid-container {
+  display: none;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.party-grid-container {
+  display: none;
+  width: 100%;
+  padding: 0 10px;
+}
+
+/* Party grid styles */
+.party-grid {
+  max-width: 100%;
+  overflow-y: 0;
+  max-height: 200px;
+}
+
+.small-text {
+  font-size: 0.7em !important;
+
+}
+
+.partido-box {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 100%;
+}
+
+#comissoes-list {
+  display: none;
+}
+
+#show-comissoes:checked ~ #comissoes-list {
+  display: block;
+}
+
+/* Only show the right label */
+#toggle-label-hide {
+  display: none;
+}
+
+#show-comissoes:checked ~ #toggle-label-hide {
+  display: inline-block;
+}
+
+#show-comissoes:checked ~ #toggle-label {
+  display: none;
+}

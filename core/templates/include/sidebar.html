@@ -1,0 +1,53 @@
+{% load static %}
+
+<div class="sidebar d-flex flex-column">
+    <a href="/" class="nav-link d-lex align-items-center" id="brand">
+      <img class="align-self-center" id="logo" src="{% static 'core/images/congregate-logo.png' %}" alt="Logo">
+      <span class="link-text h3 brand-text align-self-bottom">CongreGate</span>
+    </a>
+    <a href="/" class="nav-link">
+      <i class="bi bi-house-door-fill h4"></i>
+      <span class="link-text h5">Início</span>
+    </a>
+    <a href="#" class="nav-link">
+      <i class="bi bi-bar-chart-line-fill h4"></i>
+      <span class="link-text h5">Composição atual</span>
+    </a>
+
+
+    <div class="dropdown">
+      <a class="nav-link" href="#" id="dropdownToggle">
+        <i class="bi bi-folder-fill h4"></i>
+        <span class="link-text h5">⌄ Composição atual</span>
+      </a>
+
+      <!-- Party Grid (initially hidden) -->
+      <div class="party-grid-container" id="partyGrid">
+        <p class="text-white text-center mb-2">Por partido:</p>
+        <div class="row row-cols-3 g-1 party-grid">
+          {% for partido in short_parties %}
+            <div class="col text-center">
+              <a href="{% url 'partido_detail' partido %}">
+                <div class="bg-secondary text-white rounded py-1 partido-box">{{ partido }}</div>
+              </a>
+            </div>
+          {% endfor %}
+          {% for partido in long_parties %}
+            <div class="col text-center">
+              <a href="{% url 'partido_detail' partido %}">
+                <div class="bg-secondary text-white rounded py-1 partido-box small-text">{{ partido }}</div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+
+
+    <a href="{% url 'test' %}" class="nav-link mt-auto">
+      <i class="bi bi-info-circle-fill h5"></i>
+      <span class="link-text h6">Sobre</span>
+    </a>
+
+</div>
