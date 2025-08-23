@@ -5,6 +5,7 @@ body, html {
   padding: 0;
   height: 100%;
   overflow-x: hidden;
+  background-color: #233327 !important;
 }
 
 .sidebar {
@@ -137,12 +138,6 @@ body, html {
   padding: 0 10px;
 }
 
-.party-grid-container {
-  display: none;
-  width: 100%;
-  padding: 0 10px;
-}
-
 /* Party grid styles */
 .party-grid {
   max-width: 100%;
@@ -162,23 +157,50 @@ body, html {
   min-height: 100%;
 }
 
-#comissoes-list {
-  display: none;
+.list_link:hover li {
+  background-color: #323232;
 }
 
-#show-comissoes:checked ~ #comissoes-list {
-  display: block;
+li {
+  list-style-type: none;
 }
 
-/* Only show the right label */
-#toggle-label-hide {
-  display: none;
+.accordion-button {
+  background-color: #343A40 !important; /* Bootstrap secondary gray */
+  color: white !important;
 }
 
-#show-comissoes:checked ~ #toggle-label-hide {
-  display: inline-block;
+.accordion-button:not(.collapsed) {
+  background-color: #5a6268 !important; /* darker when expanded */
+  color: white;
 }
 
-#show-comissoes:checked ~ #toggle-label {
-  display: none;
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+
+.accordion-button.collapsed::after {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+
+.accordion-button:focus {
+  box-shadow: none !important; /* remove blue glow */
+  border-color: black !important;
+  color: white !important;
+}
+
+.accordion-body {
+  background-color: #343A40;
+}
+
+.deputado-pic {
+  height: auto;
+}
+
+.deputado-pic > img {
+  max-width: 150px;
+  height: auto;
+}
+.personal-info > * {
+  margin: 10px 0;
 }

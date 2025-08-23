@@ -56,31 +56,8 @@ def partido_detail(request, sigla):
     return render(request, 'partido_detail.html', {'data': context})
 
 
-# def deputado_detail(request, sigla, deputado_id):
-#     sigla = sigla.upper()
-#     partido_map = get_partido_map()
-#
-#     if sigla not in partido_map:
-#         raise Http404("Partido não encontrado")
-#
-#     partido_id = partido_map[sigla]
-#
-#     try:
-#         response = requests.get(f"https://dadosabertos.camara.leg.br/api/v2/deputados/{deputado_id}")
-#         response.raise_for_status()
-#         context = response.json()["dados"]
-#
-#         # Optional: validate partido_id matches
-#         party_sigla = context.get('ultimoStatus', {}).get('siglaPartido', '').upper()
-#         if party_sigla != sigla:
-#             raise Http404("Este deputado não pertence a este partido.")
-#
-#     except Exception:
-#         raise Http404("Deputado não encontrado.")
-#
-#     return render(request, 'deputado_detail.html', {'deputado': context})
-
 def deputado_detail(request, sigla, deputado_id):
+    global comissoes, projetos
     sigla = sigla.upper()
 
     # Fetch deputado info
@@ -97,25 +74,31 @@ def deputado_detail(request, sigla, deputado_id):
         raise Http404("Deputado não pertence a este partido.")
 
     # Initialize commissions list
-    comissoes = []
+    # Fetch comissions when loading page
+    try:
+        comissoes_resp = requests.get(
+            f"https://dadosabertos.camara.leg.br/api/v2/deputados/{deputado_id}/orgaos").json()
+        comissoes = comissoes_resp['dados']
+    except Exception as e:
+        print("Erro ao buscar comissões:", e)
 
-    # Fetch commissions if requested
-    if request.GET.get("comissoes") == "1":
-        try:
-            comissoes_resp = requests.get(f"https://dadosabertos.camara.leg.br/api/v2/deputados/{deputado_id}/orgaos").json()
-            comissoes = comissoes_resp['dados']
-        except Exception as e:
-            print("Erro ao buscar comissões:", e)
+    try:
+        projetos_resp = requests.get(
+            'https://dadosabertos.camara.leg.br/api/v2/proposicoes',
+            params={"idDeputadoAutor": deputado_id}).json()
+        projetos = projetos_resp['dados']
+    except Exception as e:
+        print("Erro ao buscar projetos do deputado(a):", e)
+
 
     # Return the page no matter what
     return render(request, 'deputado_detail.html', {
         'deputado': deputado,
         'sigla': sigla,
         'comissoes': comissoes,
+        'projetos': projetos,
         'show_comissoes': bool(comissoes)
     })
 
-
 def test_view(request):
     return render(request, 'test.html')
-

@@ -4,19 +4,19 @@ import pprint
 
 pp = pprint.PrettyPrinter()
 
-url = 'https://dadosabertos.camara.leg.br/api/v2/deputados/'
-deputado_id = 160674
+deputado_id = 220555
+url = 'https://dadosabertos.camara.leg.br/api/v2/deputados/220555'
 
-comissoes_resp = requests.get(url).json()
-
-comissoes = []
-cargos = []
-comissao_members_resp = requests.get(f"{url}{deputado_id}/orgaos").json()
-
-pp.pprint(comissao_members_resp['dados'])
+api_url = "https://dadosabertos.camara.leg.br/api/v2/partidos"
 
 
-        # pp.pprint(comissao_members_resp['dados'])
+def get_partido_map():
+    response = requests.get('https://dadosabertos.camara.leg.br/api/v2/partidos?itens=100&ordem=ASC&ordenarPor=id')
+    if response.status_code != 200:
+        return {}
+
+    partido_map = response.json()['dados']
+    pp.pprint(partido_map)
 
 
-# pp.pprint(comissoes_resp)
+get_partido_map()
