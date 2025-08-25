@@ -85,7 +85,10 @@ def deputado_detail(request, sigla, deputado_id):
     try:
         projetos_resp = requests.get(
             'https://dadosabertos.camara.leg.br/api/v2/proposicoes',
-            params={"idDeputadoAutor": deputado_id}).json()
+            params={
+                "idDeputadoAutor": deputado_id,
+                "codTipo": [139, 140, 141],
+                    }).json()
         projetos = projetos_resp['dados']
     except Exception as e:
         print("Erro ao buscar projetos do deputado(a):", e)

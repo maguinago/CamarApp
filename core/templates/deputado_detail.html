@@ -12,7 +12,10 @@
         {{ deputado.ultimoStatus.nomeEleitoral }}
       </h2>
       <p class="text-light">
-        <strong>Nome Civil:</strong> {{ deputado.nomeCivil }}
+        <strong>Partido:</strong> {{ deputado.partido }}
+      </p>
+      <p class="text-light">
+        <strong>Nome:</strong> {{ deputado.nomeCivil }}
       </p>
       <p class="text-light">
         <strong>Nascimento:</strong> {{ deputado.dataNascimento}} - {{ deputado.municipioNascimento }}, {{ deputado.ufNascimento }}
@@ -28,6 +31,7 @@
           <span>{{ deputado.ultimoStatus.gabinete.email }}</span>
         </a>
       </div>
+
       <div class="d-flex align-items-center">
         {% for social in deputado.redeSocial %}
           <a href="{{ social }}" class="px-2 icon-link icon-link-hover link-light link-underline link-underline-opacity-0" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);">
@@ -59,7 +63,10 @@
           <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body p-0">
               {% for comissao in comissoes %}
-                <a href="{{ comissao.uriOrgao}}" class="list_link link-underline link-underline-opacity-0 mx-auto">
+                <a href="#" data-bs-toggle="modal"
+                   data-bs-target="#comissaoModal"
+                   data-comissao-id="{{ comissao.idOrgao }}"
+                   class="list_link link-underline link-underline-opacity-0 mx-auto">
                   <li class="p-3 text-light link-underline-opacity-0">{{ comissao.nomePublicacao }} ({{ comissao.titulo }})
                   </li>
                 </a>
@@ -69,6 +76,49 @@
             </div>
           </div>
         </div>
+        <div class="modal fade" id="comissaoModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title fs-5" id="modalLabel">Detalhes da Comissão</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body" id="modal-content">
+                Carregando...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          const modal = document.getElementById('comissaoModal');
+          modal.addEventListener('show.bs.modal', function (event) {
+            const trigger = event.relatedTarget;
+            const comissaoId = trigger.getAttribute('data-comissao-id');
+
+            const modalContent = document.getElementById('modal-content');
+            const modalTitle = document.getElementById('modalLabel');
+
+            modalContent.innerHTML = "Carregando...";
+            modalTitle.textContent = "Detalhes da Comissão";
+
+            fetch(`https://dadosabertos.camara.leg.br/api/v2/orgaos/${comissaoId}`)
+              .then(response => response.json())
+              .then(data => {
+                const comiss = data.dados;
+                modalTitle.textContent = `${comiss.nomePublicacao}`;
+                modalContent.innerHTML =
+                `
+                  <p><strong>Data de Início:</strong> ${comiss.dataInicio}</p>
+                  <p><strong>Tipo:</strong> ${comiss.tipoOrgao}</p>
+                `;
+              })
+              .catch(err => {
+                modalContent.innerHTML = "<p class='text-danger'>Erro ao carregar dados.</p>";
+                console.error(err);
+              });
+          });
+        </script>
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingTwo">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -105,5 +155,7 @@
     </div>
   </div>
 </div>
+
+
 
 {% endblock %}

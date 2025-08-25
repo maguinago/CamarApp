@@ -10,7 +10,7 @@ def partidos_list(request):
         partido_map = {}
 
         for item in data["dados"]:
-            sigla = item["sigla"].upper()
+            sigla = item["sigla"]
             id_partido = item["id"]
             partidos.append(sigla)
             partido_map[sigla] = id_partido
