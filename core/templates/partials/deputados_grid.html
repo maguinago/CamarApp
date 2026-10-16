@@ -1,0 +1,35 @@
+<div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+  <p class="text-sm text-slate-300">
+    {{ deputados|length }} resultado{% if deputados|length != 1 %}s{% endif %}
+  </p>
+</div>
+
+{% if deputados %}
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+    {% for deputado in deputados %}
+      <a
+        class="group flex min-h-24 gap-3 rounded-lg border border-white/10 bg-slate-900/85 p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-400/80 hover:bg-slate-900"
+        href="{% url 'deputado_detail' deputado.siglaPartido deputado.id %}"
+      >
+        <img class="h-14 w-12 flex-none rounded-md object-cover" src="{{ deputado.urlFoto }}" alt="Foto de {{ deputado.nome }}">
+        <div class="min-w-0 flex-1">
+          <h2 class="truncate text-sm font-semibold leading-5 text-white group-hover:text-emerald-300">
+            {{ deputado.nome }}
+          </h2>
+          <div class="mt-2 flex flex-wrap gap-1.5">
+            <span class="rounded-full px-2 py-0.5 text-xs font-semibold text-white" style="background-color: {{ deputado.party_color }};">{{ deputado.siglaPartido }}</span>
+            <span class="rounded-full bg-slate-700 px-2 py-0.5 text-xs font-semibold text-slate-200">{{ deputado.siglaUf }}</span>
+          </div>
+          {% if deputado.email %}
+            <p class="mt-2 truncate text-xs text-slate-400">{{ deputado.email }}</p>
+          {% endif %}
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="rounded-lg border border-white/10 bg-slate-900/70 py-12 text-center text-slate-100">
+    <h2 class="text-lg font-semibold">Nenhum deputado encontrado</h2>
+    <p class="mt-1 text-sm text-slate-400">Ajuste os filtros para ampliar a busca.</p>
+  </div>
+{% endif %}

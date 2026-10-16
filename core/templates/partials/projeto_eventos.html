@@ -1,0 +1,18 @@
+{% for evento in eventos %}
+  <p><strong class="text-slate-100">{{ evento.titulo }}</strong> - {{ evento.dataHoraInicio }}</p>
+{% endfor %}
+
+<button
+  class="mt-3 rounded-md border border-white/15 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-50"
+  id="load-more-proj-eventos"
+  hx-swap-oob="outerHTML"
+  {% if eventos %}
+    hx-get="{% url 'projeto_eventos' projeto_id %}?page={{ next_page }}"
+    hx-target="#proj-eventos-content"
+    hx-swap="beforeend"
+  {% else %}
+    disabled
+  {% endif %}
+>
+  Carregar mais
+</button>

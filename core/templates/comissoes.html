@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Comiss&otilde;es{% endblock %}
+
+{% block content %}
+  <section class="px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mb-6">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">C&acirc;mara dos Deputados</p>
+      <h1 class="mt-1 text-3xl font-semibold tracking-tight text-white">Comiss&otilde;es e &oacute;rg&atilde;os</h1>
+      <p class="mt-2 text-sm text-slate-300">Listagem paginada de comiss&otilde;es e &oacute;rg&atilde;os, com detalhes via HTMX.</p>
+    </div>
+
+    <div id="comissao-detail-panel" class="mb-4"></div>
+    <div id="comissoes-list" class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+      {% include "partials/comissoes_cards.html" %}
+    </div>
+    <div class="mt-4">
+      {% include "partials/comissoes_load_more.html" %}
+    </div>
+  </section>
+{% endblock %}

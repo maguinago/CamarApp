@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Vota&ccedil;&otilde;es{% endblock %}
+
+{% block content %}
+  <section class="px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mb-6">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">C&acirc;mara dos Deputados</p>
+      <h1 class="mt-1 text-3xl font-semibold tracking-tight text-white">Vota&ccedil;&otilde;es</h1>
+      <p class="mt-2 text-sm text-slate-300">Use um intervalo de datas para navegar pelas vota&ccedil;&otilde;es da Casa.</p>
+    </div>
+
+    <form class="mb-4 rounded-lg border border-white/10 bg-slate-900/80 p-4" method="get">
+      <div class="grid gap-3 sm:grid-cols-3">
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-200" for="dataInicio">In&iacute;cio</label>
+          <input class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-400" id="dataInicio" name="dataInicio" type="date" value="{{ data_inicio }}">
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-200" for="dataFim">Fim</label>
+          <input class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-400" id="dataFim" name="dataFim" type="date" value="{{ data_fim }}">
+        </div>
+        <div class="flex items-end">
+          <button class="w-full rounded-md bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400" type="submit">Filtrar</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="votacao-detail-panel" class="mb-4"></div>
+    <div id="votacoes-list" class="grid gap-3 lg:grid-cols-2">
+      {% include "partials/votacoes_cards.html" %}
+    </div>
+    <div class="mt-4">
+      {% include "partials/votacoes_load_more.html" %}
+    </div>
+  </section>
+{% endblock %}

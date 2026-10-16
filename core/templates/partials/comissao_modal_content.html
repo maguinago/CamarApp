@@ -1,0 +1,92 @@
+<section class="rounded-lg border border-emerald-400/30 bg-slate-900/90 p-4 shadow-lg">
+  <div class="mb-4 flex items-start justify-between gap-3">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-wide text-emerald-300">Comiss&atilde;o</p>
+      <h2 class="mt-1 text-xl font-semibold text-white">{{ comissao.nomeOrgao|default:"Detalhes da Comiss&atilde;o" }}</h2>
+    </div>
+  </div>
+
+  <div class="grid gap-4 lg:grid-cols-2">
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Informa&ccedil;&otilde;es</h3>
+      <div class="space-y-2 text-sm text-slate-300">
+        <p><strong class="text-slate-100">Sigla:</strong> {{ comissao.sigla }}</p>
+        <p><strong class="text-slate-100">Situa&ccedil;&atilde;o:</strong> {{ comissao.situacao|default:"N/A" }}</p>
+        <p><strong class="text-slate-100">Data de cria&ccedil;&atilde;o:</strong> {{ comissao.dataInicio|default:"N/A" }}</p>
+      </div>
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Todos os campos</h3>
+      <dl class="max-h-80 space-y-2 overflow-auto pr-1 text-sm text-slate-300">
+        {% for key, value in comissao.items %}
+          <div>
+            <dt class="text-xs uppercase tracking-wide text-slate-500">{{ key }}</dt>
+            <dd class="break-words text-slate-200">{{ value|default:"N/A" }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Membros</h3>
+      {% if membros %}
+        <ul class="space-y-1 text-sm text-slate-300">
+          {% for membro in membros %}
+            <li>{{ membro.nome }} ({{ membro.titulo }})</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-sm text-slate-400">Sem membros cadastrados.</p>
+      {% endif %}
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Vota&ccedil;&otilde;es</h3>
+      <div id="votes-content" class="space-y-2 text-sm text-slate-300">
+        {% for votacao in votacoes %}
+          <p><strong class="text-slate-100">{{ votacao.id }}</strong> - {{ votacao.descricao }}</p>
+        {% empty %}
+          <p>Sem vota&ccedil;&otilde;es encontradas.</p>
+        {% endfor %}
+      </div>
+      <button
+        class="mt-3 rounded-md border border-white/15 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-50"
+        id="load-more-votes"
+        {% if votacoes %}
+          hx-get="{% url 'comissao_votacoes' comissao_id %}?page={{ next_page }}"
+          hx-target="#votes-content"
+          hx-swap="beforeend"
+        {% else %}
+          disabled
+        {% endif %}
+      >
+        Carregar mais
+      </button>
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Eventos</h3>
+      <div id="events-content" class="space-y-2 text-sm text-slate-300">
+        {% for evento in eventos %}
+          <p><strong class="text-slate-100">{{ evento.titulo }}</strong> - {{ evento.dataHoraInicio }}</p>
+        {% empty %}
+          <p>Sem eventos encontrados.</p>
+        {% endfor %}
+      </div>
+      <button
+        class="mt-3 rounded-md border border-white/15 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-50"
+        id="load-more-events"
+        {% if eventos %}
+          hx-get="{% url 'comissao_eventos' comissao_id %}?page={{ next_page }}"
+          hx-target="#events-content"
+          hx-swap="beforeend"
+        {% else %}
+          disabled
+        {% endif %}
+      >
+        Carregar mais
+      </button>
+    </div>
+  </div>
+</section>

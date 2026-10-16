@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Projetos{% endblock %}
+
+{% block content %}
+  <section class="px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mb-6">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">C&acirc;mara dos Deputados</p>
+      <h1 class="mt-1 text-3xl font-semibold tracking-tight text-white">Projetos e proposi&ccedil;&otilde;es</h1>
+      <p class="mt-2 text-sm text-slate-300">Listagem paginada por ano e tipo de proposi&ccedil;&atilde;o.</p>
+    </div>
+
+    <form class="mb-4 rounded-lg border border-white/10 bg-slate-900/80 p-4" method="get">
+      <div class="grid gap-3 sm:grid-cols-3">
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-200" for="ano">Ano</label>
+          <input class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-400" id="ano" name="ano" type="number" min="1988" value="{{ ano }}">
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-200" for="siglaTipo">Tipo</label>
+          <input class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-400" id="siglaTipo" name="siglaTipo" type="text" value="{{ sigla_tipo }}" placeholder="PL, PEC, MPV...">
+        </div>
+        <div class="flex items-end">
+          <button class="w-full rounded-md bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400" type="submit">Filtrar</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="projeto-detail-panel" class="mb-4"></div>
+    <div id="projetos-list" class="grid gap-3 lg:grid-cols-2">
+      {% include "partials/projetos_cards.html" %}
+    </div>
+    <div class="mt-4">
+      {% include "partials/projetos_load_more.html" %}
+    </div>
+  </section>
+{% endblock %}

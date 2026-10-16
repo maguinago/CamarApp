@@ -1,0 +1,14 @@
+<button
+  id="load-more-votacoes"
+  class="rounded-md border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-50"
+  {% if oob %}hx-swap-oob="outerHTML"{% endif %}
+  {% if has_more %}
+    hx-get="{% url 'votacoes' %}?page={{ next_page }}&dataInicio={{ data_inicio }}&dataFim={{ data_fim }}"
+    hx-target="#votacoes-list"
+    hx-swap="beforeend"
+  {% else %}
+    disabled
+  {% endif %}
+>
+  Carregar mais
+</button>

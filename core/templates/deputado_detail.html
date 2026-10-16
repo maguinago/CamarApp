@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="px-4 py-6 sm:px-6 lg:px-8">
+  <div class="mb-6 grid gap-5 rounded-lg border border-white/10 bg-slate-900/80 p-5 shadow-lg md:grid-cols-[140px_1fr]">
+    <img class="mx-auto h-40 w-32 rounded-lg border border-white/10 object-cover" src="{{ deputado.ultimoStatus.urlFoto }}" alt="Foto do deputado(a)">
+    <div>
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">{{ deputado.ultimoStatus.siglaPartido }}/{{ deputado.ultimoStatus.siglaUf }}</p>
+      <h1 class="mt-1 text-3xl font-semibold uppercase tracking-tight text-white">
+        {{ deputado.ultimoStatus.nomeEleitoral }}
+      </h1>
+      <div class="mt-4 grid gap-2 text-sm text-slate-300">
+        <p><strong class="text-slate-100">Nome:</strong> {{ deputado.nomeCivil }}</p>
+        <p><strong class="text-slate-100">Nascimento:</strong> {{ deputado.dataNascimento }} - {{ deputado.municipioNascimento }}, {{ deputado.ufNascimento }}</p>
+        <p>
+          <strong class="text-slate-100">Gabinete:</strong>
+          Pr&eacute;dio {{ deputado.ultimoStatus.gabinete.predio }} -
+          {{ deputado.ultimoStatus.gabinete.predio }}&ordm; andar,
+          Sala {{ deputado.ultimoStatus.gabinete.sala }} |
+          <a class="text-emerald-300 hover:text-emerald-200" href="mailto:{{ deputado.ultimoStatus.gabinete.email }}">
+            {{ deputado.ultimoStatus.gabinete.email }}
+          </a>
+        </p>
+      </div>
+      {% if deputado.redeSocial %}
+        <div class="mt-4 flex flex-wrap gap-2">
+          {% for social in deputado.redeSocial %}
+            <a class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-sm font-bold text-slate-200 transition hover:border-emerald-400 hover:text-emerald-300" href="{{ social }}" target="_blank" rel="noopener noreferrer" title="{{ social }}">
+              {% if "instagram.com" in social %}
+                ◎
+              {% elif "facebook" in social %}
+                f
+              {% elif "twitter.com" in social or "x.com" in social %}
+                X
+              {% else %}
+                ↗
+              {% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+    <article class="rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">Comiss&otilde;es</p>
+      <h2 class="mt-1 text-3xl font-semibold text-white">{{ comissoes|length }}</h2>
+      <div class="mt-4 max-h-64 space-y-2 overflow-auto pr-1">
+        {% for comissao in comissoes %}
+          <button
+            type="button"
+            hx-get="{% url 'comissao_modal' comissao.idOrgao %}"
+            hx-target="#detail-panel"
+            hx-swap="innerHTML"
+            class="block w-full rounded-md bg-slate-950/60 px-3 py-2 text-left text-sm text-slate-200 transition hover:bg-white/10 hover:text-emerald-300"
+          >
+            {{ comissao.nomePublicacao }} ({{ comissao.titulo }})
+          </button>
+          <a class="-mt-1 mb-2 block px-3 text-xs font-semibold text-emerald-300 hover:text-emerald-200" href="{% url 'comissao_detail' comissao.idOrgao %}">Abrir p&aacute;gina da comiss&atilde;o</a>
+        {% empty %}
+          <p class="text-sm text-slate-400">Sem comiss&otilde;es registradas.</p>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">Vota&ccedil;&otilde;es</p>
+      <h2 class="mt-1 text-3xl font-semibold text-white">{{ votos|length }}</h2>
+      <p class="mt-1 text-xs text-slate-400">Votos encontrados nas vota&ccedil;&otilde;es recentes consultadas.</p>
+      <div class="mt-4 max-h-64 space-y-2 overflow-auto pr-1">
+        {% for voto in votos %}
+          <a
+            class="block rounded-md bg-slate-950/60 px-3 py-2 text-sm text-slate-300 transition hover:bg-white/10 hover:text-emerald-300"
+            href="{% url 'votacao_page' voto.id %}"
+          >
+            <strong class="text-slate-100">{{ voto.voto }}</strong>
+            <p class="mt-1 text-xs text-slate-400">{{ voto.data }} &middot; {{ voto.siglaOrgao }}</p>
+            <p class="mt-1 line-clamp-2">{{ voto.descricao }}</p>
+          </a>
+        {% empty %}
+          <p class="text-sm text-slate-400">Nenhum voto individual encontrado nas &uacute;ltimas vota&ccedil;&otilde;es consultadas.</p>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">Presen&ccedil;a em sess&otilde;es</p>
+      <h2 class="mt-1 text-3xl font-semibold text-white">{{ eventos.count }}</h2>
+      <p class="mt-1 text-xs text-slate-400">Eventos/sess&otilde;es listados em {{ current_year }}.</p>
+      <div class="mt-4 max-h-64 space-y-2 overflow-auto pr-1">
+        {% for evento in eventos.recent %}
+          <div class="rounded-md bg-slate-950/60 px-3 py-2 text-sm text-slate-300">
+            <strong class="text-slate-100">{{ evento.descricaoTipo|default:"Evento" }}</strong>
+            <p class="mt-1 text-xs text-slate-400">{{ evento.dataHoraInicio }}</p>
+            <p class="mt-1 line-clamp-2">{{ evento.descricao }}</p>
+          </div>
+        {% empty %}
+          <p class="text-sm text-slate-400">Sem eventos recentes encontrados.</p>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">Gastos de campanha</p>
+      <h2 class="mt-1 text-xl font-semibold text-white">Fonte externa</h2>
+      <p class="mt-3 text-sm leading-6 text-slate-300">
+        Gastos de campanha n&atilde;o est&atilde;o nos Dados Abertos da C&acirc;mara. Para este card ficar completo, a fonte correta &eacute; o TSE/DivulgaCand.
+      </p>
+    </article>
+
+    <article class="rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">Gastos de gabinete</p>
+      <h2 class="mt-1 text-3xl font-semibold text-white">{{ despesas.total_display }}</h2>
+      <p class="mt-1 text-xs text-slate-400">{{ despesas.count }} despesas em {{ current_year }}.</p>
+      <div class="mt-4 space-y-2">
+        {% for despesa in despesas.top_types %}
+          <div class="rounded-md bg-slate-950/60 px-3 py-2 text-sm text-slate-300">
+            <p class="line-clamp-2">{{ despesa.tipo }}</p>
+            <strong class="text-slate-100">{{ despesa.total }}</strong>
+          </div>
+        {% empty %}
+          <p class="text-sm text-slate-400">Sem despesas encontradas para {{ current_year }}.</p>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">Emendas parlamentares</p>
+      <h2 class="mt-1 text-3xl font-semibold text-white">{{ emendas|length }}</h2>
+      <p class="mt-1 text-xs text-slate-400">Proposi&ccedil;&otilde;es do tipo emenda encontradas para autoria.</p>
+      <div class="mt-4 max-h-64 space-y-2 overflow-auto pr-1">
+        {% for emenda in emendas %}
+          <div class="rounded-md bg-slate-950/60 px-3 py-2 text-sm text-slate-300">
+            <strong class="text-slate-100">{{ emenda.siglaTipo }} {{ emenda.numero }}/{{ emenda.ano }}</strong>
+            <p class="mt-1 line-clamp-2">{{ emenda.ementa }}</p>
+            <a class="mt-2 inline-block text-xs font-semibold text-emerald-300 hover:text-emerald-200" href="{% url 'projeto_detail' emenda.id %}">Abrir p&aacute;gina</a>
+          </div>
+        {% empty %}
+          <p class="text-sm text-slate-400">Nenhuma emenda autoral encontrada no recorte consultado.</p>
+        {% endfor %}
+      </div>
+    </article>
+  </div>
+
+  <div id="detail-panel" class="mt-4"></div>
+
+  <section class="mt-4 rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg">
+    <h2 class="text-lg font-semibold text-white">Outras adi&ccedil;&otilde;es interessantes</h2>
+    <div class="mt-3 flex flex-wrap gap-2">
+      {% for sugestao in sugestoes %}
+        <span class="rounded-full border border-white/10 px-3 py-1 text-sm text-slate-300">{{ sugestao }}</span>
+      {% endfor %}
+    </div>
+  </section>
+</section>
+
+{% endblock %}

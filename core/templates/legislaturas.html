@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Legislaturas{% endblock %}
+
+{% block content %}
+  <section class="px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mb-6">
+      <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">Hist&oacute;rico</p>
+      <h1 class="mt-1 text-3xl font-semibold tracking-tight text-white">Composi&ccedil;&atilde;o por legislaturas</h1>
+      <p class="mt-2 text-sm text-slate-300">
+        Evolu&ccedil;&atilde;o da composi&ccedil;&atilde;o partid&aacute;ria ao longo dos anos.
+      </p>
+    </div>
+
+    <div class="rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg">
+      {{ plot_html|safe }}
+    </div>
+  </section>
+{% endblock %}

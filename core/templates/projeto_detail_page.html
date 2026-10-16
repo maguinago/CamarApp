@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Projeto{% endblock %}
+
+{% block content %}
+  <section class="px-4 py-6 sm:px-6 lg:px-8">
+    <a class="mb-4 inline-block text-sm font-semibold text-emerald-300 hover:text-emerald-200" href="{% url 'projetos' %}">&larr; Voltar para projetos</a>
+    {% include "partials/projeto_modal_content.html" %}
+  </section>
+{% endblock %}

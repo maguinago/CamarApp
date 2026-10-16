@@ -1,0 +1,50 @@
+{% load static %}
+
+<aside class="group fixed inset-y-0 left-0 z-40 flex w-20 flex-col overflow-hidden bg-slate-900/95 shadow-xl transition-all duration-300 hover:w-64">
+  <a href="/" class="flex min-h-20 items-center gap-3 px-5 text-emerald-400 hover:bg-white/5">
+    <img class="h-10 w-10 flex-none object-contain" src="{% static 'core/images/congregate-logo.png' %}" alt="Logo">
+    <span class="hidden whitespace-nowrap text-2xl font-semibold group-hover:inline">CongreGate</span>
+  </a>
+
+  <nav class="flex flex-1 flex-col py-3">
+    <div class="mx-3 mb-4 hidden rounded-full border border-white/10 bg-slate-950/80 p-1 group-hover:grid group-hover:grid-cols-2">
+      <a href="{% url 'home' %}" class="rounded-full bg-emerald-500 px-3 py-1.5 text-center text-xs font-semibold text-slate-950">C&acirc;mara</a>
+      <a href="{% url 'senado' %}" class="rounded-full px-3 py-1.5 text-center text-xs font-semibold text-slate-300 hover:bg-white/10 hover:text-white">Senado</a>
+    </div>
+
+    <a href="/" class="flex items-center gap-4 px-6 py-3 text-slate-200 hover:bg-white/5 hover:text-emerald-300">
+      <span class="w-7 flex-none text-center text-sm font-bold">IN</span>
+      <span class="hidden whitespace-nowrap text-lg group-hover:inline">In&iacute;cio</span>
+    </a>
+
+    <a href="{% url 'composicao_atual' %}" class="flex items-center gap-4 px-6 py-3 text-slate-200 hover:bg-white/5 hover:text-emerald-300">
+      <span class="w-7 flex-none text-center text-sm font-bold">CA</span>
+      <span class="hidden whitespace-nowrap text-lg group-hover:inline">Composi&ccedil;&atilde;o atual</span>
+    </a>
+
+    <a href="{% url 'legislaturas' %}" class="flex items-center gap-4 px-6 py-3 text-slate-200 hover:bg-white/5 hover:text-emerald-300">
+      <span class="w-7 flex-none text-center text-sm font-bold">LG</span>
+      <span class="hidden whitespace-nowrap text-lg group-hover:inline">Legislaturas</span>
+    </a>
+
+    <a href="{% url 'comissoes' %}" class="flex items-center gap-4 px-6 py-3 text-slate-200 hover:bg-white/5 hover:text-emerald-300">
+      <span class="w-7 flex-none text-center text-sm font-bold">CO</span>
+      <span class="hidden whitespace-nowrap text-lg group-hover:inline">Comiss&otilde;es</span>
+    </a>
+
+    <a href="{% url 'votacoes' %}" class="flex items-center gap-4 px-6 py-3 text-slate-200 hover:bg-white/5 hover:text-emerald-300">
+      <span class="w-7 flex-none text-center text-sm font-bold">VT</span>
+      <span class="hidden whitespace-nowrap text-lg group-hover:inline">Vota&ccedil;&otilde;es</span>
+    </a>
+
+    <a href="{% url 'projetos' %}" class="flex items-center gap-4 px-6 py-3 text-slate-200 hover:bg-white/5 hover:text-emerald-300">
+      <span class="w-7 flex-none text-center text-sm font-bold">PR</span>
+      <span class="hidden whitespace-nowrap text-lg group-hover:inline">Projetos</span>
+    </a>
+
+    <a href="{% url 'test' %}" class="mt-auto flex items-center gap-4 px-6 py-3 text-slate-200 hover:bg-white/5 hover:text-emerald-300">
+      <span class="w-7 flex-none text-center text-sm font-bold">?</span>
+      <span class="hidden whitespace-nowrap text-base group-hover:inline">Sobre</span>
+    </a>
+  </nav>
+</aside>

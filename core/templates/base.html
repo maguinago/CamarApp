@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>{% block title %}Meu App{% endblock %}</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-950 to-emerald-950 text-slate-100">
+    {% include "include/sidebar.html" %}
+
+    <main class="min-h-screen pl-20">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

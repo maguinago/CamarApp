@@ -1,0 +1,71 @@
+<section class="rounded-lg border border-emerald-400/30 bg-slate-900/90 p-4 shadow-lg">
+  <div class="mb-4">
+    <p class="text-xs font-semibold uppercase tracking-wide text-emerald-300">Projeto</p>
+    <h2 class="mt-1 text-xl font-semibold text-white">Detalhes do Projeto</h2>
+  </div>
+
+  <div class="grid gap-4 lg:grid-cols-2">
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4 lg:col-span-2">
+      <h3 class="mb-3 font-semibold text-white">Informa&ccedil;&otilde;es</h3>
+      <div class="space-y-2 text-sm text-slate-300">
+        <p><strong class="text-slate-100">T&iacute;tulo:</strong> {{ projeto.ementa }}</p>
+        <p><strong class="text-slate-100">Apresenta&ccedil;&atilde;o:</strong> {{ projeto.dataApresentacao }}</p>
+        <p><strong class="text-slate-100">Situa&ccedil;&atilde;o:</strong> {{ projeto.statusProposicao.descricaoTramitacao|default:"N/A" }}</p>
+      </div>
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4 lg:col-span-2">
+      <h3 class="mb-3 font-semibold text-white">Todos os campos</h3>
+      <dl class="max-h-80 space-y-2 overflow-auto pr-1 text-sm text-slate-300">
+        {% for key, value in projeto.items %}
+          <div>
+            <dt class="text-xs uppercase tracking-wide text-slate-500">{{ key }}</dt>
+            <dd class="break-words text-slate-200">{{ value|default:"N/A" }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Tramita&ccedil;&otilde;es</h3>
+      <div class="max-h-96 space-y-2 overflow-auto pr-1 text-sm text-slate-300">
+        {% for tramitacao in tramitacoes %}
+          <div class="rounded-md bg-slate-900/80 px-3 py-2">
+            <strong class="text-slate-100">{{ tramitacao.dataHora }}</strong>
+            <p>{{ tramitacao.descricaoTramitacao|default:tramitacao.descricaoSituacao|default:"Tramitacao" }}</p>
+            <p class="mt-1 line-clamp-2 text-xs text-slate-400">{{ tramitacao.despacho }}</p>
+          </div>
+        {% empty %}
+          <p>Sem tramita&ccedil;&otilde;es encontradas.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Vota&ccedil;&otilde;es relacionadas</h3>
+      <div class="max-h-96 space-y-2 overflow-auto pr-1 text-sm text-slate-300">
+        {% for votacao in votacoes %}
+          <a class="block rounded-md bg-slate-900/80 px-3 py-2 transition hover:bg-white/10 hover:text-emerald-300" href="{% url 'votacao_page' votacao.id %}">
+            <strong class="text-slate-100">{{ votacao.data }} &middot; {{ votacao.siglaOrgao }}</strong>
+            <p class="mt-1 line-clamp-2">{{ votacao.descricao }}</p>
+          </a>
+        {% empty %}
+          <p>Nenhuma vota&ccedil;&atilde;o relacionada encontrada.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4 lg:col-span-2">
+      <h3 class="mb-3 font-semibold text-white">Autores</h3>
+      {% if autores %}
+        <ul class="space-y-1 text-sm text-slate-300">
+          {% for autor in autores %}
+            <li>{{ autor.nome }} ({{ autor.tipoAutor }})</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-sm text-slate-400">Sem autores cadastrados.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>

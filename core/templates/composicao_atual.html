@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Composi&ccedil;&atilde;o atual{% endblock %}
+
+{% block content %}
+  <section class="px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mb-6">
+      <h1 class="text-3xl font-semibold tracking-tight text-white">Composi&ccedil;&atilde;o atual</h1>
+      <p class="mt-1 text-sm text-slate-300">
+        Deputados em exerc&iacute;cio na legislatura {{ legislatura_id }}.
+      </p>
+    </div>
+
+    <form
+      class="mb-6 rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg"
+      method="get"
+      hx-get="{% url 'composicao_atual' %}"
+      hx-target="#deputados-grid"
+      hx-swap="innerHTML"
+      hx-trigger="change, keyup changed delay:400ms from:#nome"
+    >
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+        <div class="sm:col-span-2">
+          <label class="mb-1 block text-sm font-medium text-slate-200" for="nome">Nome</label>
+          <input
+            class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30"
+            id="nome"
+            name="nome"
+            type="search"
+            value="{{ selected.nome }}"
+            placeholder="Buscar deputado"
+          >
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-200" for="partido">Partido</label>
+          <select class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30" id="partido" name="partido">
+            <option value="">Todos</option>
+            {% for partido in partidos %}
+              <option value="{{ partido.sigla }}" {% if selected.partido == partido.sigla %}selected{% endif %}>
+                {{ partido.sigla }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-200" for="uf">UF</label>
+          <select class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30" id="uf" name="uf">
+            <option value="">Todas</option>
+            {% for uf in ufs %}
+              <option value="{{ uf.sigla }}" {% if selected.uf == uf.sigla %}selected{% endif %}>
+                {{ uf.sigla }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-200" for="sexo">G&ecirc;nero</label>
+          <select class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30" id="sexo" name="sexo">
+            <option value="">Todos</option>
+            <option value="F" {% if selected.sexo == "F" %}selected{% endif %}>Feminino</option>
+            <option value="M" {% if selected.sexo == "M" %}selected{% endif %}>Masculino</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-slate-200" for="bloco">Bloco</label>
+          <select class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30" id="bloco" name="bloco">
+            <option value="">Todos</option>
+            {% for bloco in blocos %}
+              <option value="{{ bloco.id }}" {% if selected.bloco == bloco.id|stringformat:"s" %}selected{% endif %}>
+                {{ bloco.nome }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-4 flex gap-2">
+        <button class="rounded-md bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400" type="submit">Filtrar</button>
+        <a class="rounded-md border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10" href="{% url 'composicao_atual' %}">Limpar</a>
+      </div>
+    </form>
+
+    <div id="deputados-grid">
+      {% include "partials/deputados_grid.html" %}
+    </div>
+  </section>
+{% endblock %}

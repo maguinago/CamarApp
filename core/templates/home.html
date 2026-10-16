@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}In&iacute;cio{% endblock %}
+
+{% block content %}
+  <section class="px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">C&acirc;mara dos Deputados</p>
+        <h1 class="mt-1 text-3xl font-semibold tracking-tight text-white">Distribui&ccedil;&atilde;o de cadeiras por partido</h1>
+        <p class="mt-2 text-sm text-slate-300">
+          Waffle chart com {{ total_seats }} cadeiras da composi&ccedil;&atilde;o atual. Passe o mouse em uma cadeira para ver o partido.
+        </p>
+      </div>
+      <a class="rounded-md bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400" href="{% url 'composicao_atual' %}">
+        Ver deputados
+      </a>
+    </div>
+
+    <div class="rounded-lg border border-white/10 bg-slate-900/80 p-4 shadow-lg">
+      <div class="grid grid-cols-[repeat(27,minmax(0,1fr))] gap-1">
+        {% for seat in seats %}
+          <a
+            class="group relative aspect-square rounded-[2px] outline-none ring-white/30 transition hover:scale-125 hover:ring-2 focus:scale-125 focus:ring-2"
+            href="{% url 'partido_detail' seat.sigla %}"
+            style="background-color: {{ seat.color }};"
+            aria-label="{{ seat.sigla }}: {{ seat.count }} deputados"
+          >
+            <span class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-md bg-slate-950 px-2 py-1 text-xs font-semibold text-white shadow-lg group-hover:block group-focus:block">
+              {{ seat.sigla }} - {{ seat.nome }}: {{ seat.count }} deputados
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

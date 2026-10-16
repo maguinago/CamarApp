@@ -1,0 +1,49 @@
+<section class="rounded-lg border border-emerald-400/30 bg-slate-900/90 p-4 shadow-lg">
+  <div class="mb-4">
+    <p class="text-xs font-semibold uppercase tracking-wide text-emerald-300">Vota&ccedil;&atilde;o</p>
+    <h2 class="mt-1 text-xl font-semibold text-white">{{ votacao.id }}</h2>
+    <p class="mt-2 text-sm text-slate-300">{{ votacao.descricao }}</p>
+  </div>
+
+  <div class="grid gap-4 lg:grid-cols-3">
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Dados gerais</h3>
+      <dl class="space-y-2 text-sm text-slate-300">
+        {% for key, value in votacao.items %}
+          <div>
+            <dt class="text-xs uppercase tracking-wide text-slate-500">{{ key }}</dt>
+            <dd class="break-words text-slate-200">{{ value|default:"N/A" }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Orienta&ccedil;&otilde;es</h3>
+      <div class="max-h-96 space-y-2 overflow-auto pr-1">
+        {% for orientacao in orientacoes %}
+          <div class="rounded-md bg-slate-900/80 px-3 py-2 text-sm text-slate-300">
+            <strong class="text-slate-100">{{ orientacao.siglaPartidoBloco|default:"Partido/Bloco" }}</strong>
+            <p>{{ orientacao.orientacao|default:"Sem orienta&ccedil;&atilde;o" }}</p>
+          </div>
+        {% empty %}
+          <p class="text-sm text-slate-400">Sem orienta&ccedil;&otilde;es registradas.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="rounded-md border border-white/10 bg-slate-950/60 p-4">
+      <h3 class="mb-3 font-semibold text-white">Votos</h3>
+      <div class="max-h-96 space-y-2 overflow-auto pr-1">
+        {% for voto in votos %}
+          <div class="rounded-md bg-slate-900/80 px-3 py-2 text-sm text-slate-300">
+            <strong class="text-slate-100">{{ voto.deputado_.nome|default:voto.deputado.nome|default:"Parlamentar" }}</strong>
+            <p>{{ voto.tipoVoto|default:voto.voto|default:"Registrado" }}</p>
+          </div>
+        {% empty %}
+          <p class="text-sm text-slate-400">Sem votos nominais dispon&iacute;veis.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
